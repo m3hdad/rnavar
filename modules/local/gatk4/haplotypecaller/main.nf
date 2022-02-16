@@ -33,6 +33,7 @@ process GATK4_HAPLOTYPECALLER {
     path "versions.yml"                                 , emit: versions
 
     script:
+    def args = task.ext.args ?: ''
     def prefix    = options.suffix ? "${interval.baseName}_${meta.id}${options.suffix}" : "${interval.baseName}_${meta.id}"
     def avail_mem       = 3
     if (!task.memory) {
@@ -51,7 +52,7 @@ process GATK4_HAPLOTYPECALLER {
         ${dbsnp_option} \\
         ${interval_option} \\
         -O ${prefix}.vcf.gz \\
-        $options.args \\
+        $args \\
         --tmp-dir .
 
     cat <<-END_VERSIONS > versions.yml

@@ -29,6 +29,7 @@ process GATK4_SPLITNCIGARREADS {
     path  "versions.yml"          , emit: versions
 
     script:
+    def args = task.ext.args ?: ''
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def interval_option = interval ? "-L ${interval}" : ""
     """
@@ -37,7 +38,7 @@ process GATK4_SPLITNCIGARREADS {
         -I $bam \\
         ${interval_option} \\
         -O ${prefix}.bam \\
-        $options.args
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
